@@ -72,11 +72,8 @@ export default function Home() {
   };
 
   const handleShare = async () => {
-    const message = `${name ? `${name}의 ` : ''}전생 분석 결과를 확인해 보세요.
-전생 신분: ${result?.identity}
-성향: ${result?.characteristics}`;
+    const message = `${name ? `${name}의 ` : ''}전생 분석 결과를 확인해 보세요.\n전생 신분: ${result?.identity}\n성향: ${result?.characteristics}`;
     
-    // 카카오톡 공유 기능이 있다면 여기에 추가 (현재는 Web Share API)
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({ title: '전생왕AI', text: message, url: window.location.href });
@@ -101,83 +98,156 @@ export default function Home() {
   };
 
   return (
-    <main className="landing">
-      <div className="aurora" aria-hidden="true" />
-      <section className="hero glass-panel">
-        <header className="hero-header">
-          <p className="hero-eyebrow">전생왕AI</p>
-          <h1 className="hero-title">푸른 심야의 문을 열고 전생을 깨우세요</h1>
-          <p className="hero-sub">
-            이름과 생년월일만으로 당신의 전생 서사를 해석하는 프리미엄 AI 타로.
-          </p>
-          <p style={{ fontSize: '0.8rem', color: 'var(--gold)' }}>
-            무료 이용 횟수: {Math.max(0, MAX_FREE_TRIES - usageCount)} / {MAX_FREE_TRIES}
-          </p>
-        </header>
+    <div className="mystic-bg">
+      <header className="main-header pt-10">
+        <div className="text-gold mb-1">
+          <span className="material-symbols-outlined text-4xl" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
+        </div>
+        <h1 className="text-slate-100">전생왕<span className="text-primary">AI</span></h1>
+        <p className="text-slate-400">당신의 전생을 분석해 드립니다</p>
+        <p className="text-gold" style={{ fontSize: '0.75rem', marginTop: '0.5rem' }}>
+          무료 이용 횟수: {Math.max(0, MAX_FREE_TRIES - usageCount)} / {MAX_FREE_TRIES}
+        </p>
+      </header>
 
-        <form className="input-grid" onSubmit={(e) => e.preventDefault()}>
-          <label className="field">
-            <span className="field-label">이름</span>
-            <input
-              className="text-input"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="이름을 입력하세요"
-              disabled={loading}
-            />
-          </label>
-          <label className="field">
-            <span className="field-label">생년월일</span>
-            <input
-              className="text-input"
-              type="date"
-              value={birthDate}
-              onChange={(e) => setBirthDate(e.target.value)}
-              disabled={loading}
-            />
-          </label>
-        </form>
+      <main className="px-6 pb-24" style={{ flex: 1 }}>
+        <div className="hero-visual">
+          <div className="hero-visual-gradient"></div>
+          <div className="hero-visual-bg"></div>
+          <div className="hero-icon-wrap animate-pulse">
+            <span className="material-symbols-outlined text-5xl text-gold">psychology</span>
+          </div>
+        </div>
 
-        {error && <p style={{ color: '#ff6b6b', textAlign: 'center', fontSize: '0.9rem' }}>{error}</p>}
-
-        <button 
-          className="btn-analyze" 
-          type="button" 
-          onClick={handleAnalyze}
-          disabled={loading}
-        >
-          {loading ? '운명의 빛이 닿는 중...' : '전생 분석하기'}
-        </button>
-
-        {result && (
-          <div className="result-card">
-            <div className="card-inner">
-              <p className="card-eyebrow">당신의 전생</p>
-              <h2 className="card-title">{result.identity}</h2>
-              <div style={{ marginBottom: '16px', fontSize: '0.9rem', color: 'var(--gold)' }}>
-                <span>{result.era}</span> | <span>{result.characteristics}</span>
+        {!result ? (
+          <section className="glass-card input-section">
+            <div className="absolute top-0 right-0 p-2 opacity-20">
+              <span className="material-symbols-outlined text-6xl text-gold">history_edu</span>
+            </div>
+            <h2 className="input-header text-slate-100">
+              <span className="material-symbols-outlined text-primary">edit_note</span>
+              정보 입력
+            </h2>
+            
+            <form onSubmit={(e) => e.preventDefault()}>
+              <div className="input-group">
+                <label className="input-label">성함</label>
+                <input 
+                  type="text" 
+                  className="input-field" 
+                  placeholder="이름을 입력하세요" 
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  disabled={loading}
+                />
               </div>
-              <p className="card-body">
-                {result.story}
-              </p>
-              <div className="card-actions">
-                <button className="btn-ghost" type="button" onClick={handleShare}>
-                  공유하기
-                </button>
-                <button className="btn-ghost" type="button" onClick={handleReset}>
-                  다시 하기
-                </button>
+              <div className="input-group">
+                <label className="input-label">생년월일</label>
+                <input 
+                  type="date" 
+                  className="input-field" 
+                  value={birthDate}
+                  onChange={(e) => setBirthDate(e.target.value)}
+                  disabled={loading}
+                />
+              </div>
+              
+              {error && <p className="text-center mt-4" style={{ color: '#ff6b6b', fontSize: '0.875rem' }}>{error}</p>}
+              
+              <button 
+                type="button" 
+                className="btn-submit gold-glow" 
+                onClick={handleAnalyze}
+                disabled={loading}
+              >
+                <span>{loading ? '운명의 빛이 닿는 중...' : '전생 분석하기'}</span>
+                {!loading && <span className="material-symbols-outlined text-gold">flare</span>}
+              </button>
+            </form>
+          </section>
+        ) : (
+          <section className="result-section">
+            <h3 className="result-header text-gold/80">
+              <div className="result-line"></div>
+              분석 결과
+              <div className="result-line"></div>
+            </h3>
+            
+            <div className="tarot-card tarot-border">
+              <div className="tarot-corner">
+                <span className="material-symbols-outlined text-xs">grade</span>
+                <span className="material-symbols-outlined text-xs">grade</span>
+              </div>
+              
+              <div className="portrait-ring">
+                <div className="portrait-inner">
+                  <img 
+                    className="portrait-img" 
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvWhkOQP0av-mdAbTcL0qE8A_yJywF-baFxsZpHG_ZYtjs18XNyvOdBbW1OWPy4bB6YZiimqyCcfcG1az5k-42e_WOSrCn4uFv_YABNWctUnuwTyHrCFvUF4-d9cZuXqz-M0VM8xemhY4ip9aIWpL3tIwHR9JtCrkGJNVX4dWwroVbvuIciCyCNTDIuQ1vf0rBvS3fwU6vs8Siggt2DCJ05eInK0u1hBUYsOIQR7prwaWgwi_Ey7RzFr4k6pUNh5-v09x7eH9Y_pk" 
+                    alt="Past life portrait" 
+                  />
+                </div>
+              </div>
+              
+              <h4 className="tarot-title">{result.identity}</h4>
+              <p className="tarot-era">{result.era}</p>
+              
+              <div className="tarot-divider"></div>
+              
+              <p className="tarot-story">"{result.story}"</p>
+              
+              <div className="tarot-tags">
+                <span className="tarot-tag">#{result.characteristics.split(',')[0]}</span>
+                {result.characteristics.split(',').length > 1 && (
+                  <span className="tarot-tag">#{result.characteristics.split(',')[1].trim()}</span>
+                )}
+              </div>
+              
+              <div className="tarot-corner bottom">
+                <span className="material-symbols-outlined text-xs">ink_pen</span>
+                <span className="material-symbols-outlined text-xs">ink_pen</span>
               </div>
             </div>
-          </div>
+            
+            <div className="card-actions">
+              <button className="btn-ghost text-sm font-medium" onClick={handleShare}>공유하기</button>
+              <button className="btn-ghost text-sm font-medium" onClick={handleReset}>다시 하기</button>
+            </div>
+          </section>
         )}
-      </section>
+        
+        <AdSlot className="mt-8" />
+      </main>
 
-      {/* 광고 영역 */}
-      <AdSlot className="mt-8" />
+      {/* Navigation Bar (iOS style) */}
+      <nav className="bottom-nav">
+        <div className="nav-inner">
+          <button className="nav-item active" onClick={handleReset}>
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>temple_buddhist</span>
+            <span className="nav-text">분석</span>
+          </button>
+          <button className="nav-item">
+            <span className="material-symbols-outlined">history</span>
+            <span className="nav-text">기록</span>
+          </button>
+          <button className="nav-item" onClick={() => setShowPayment(true)}>
+            <span className="material-symbols-outlined">stars</span>
+            <span className="nav-text">프리미엄</span>
+          </button>
+          <button className="nav-item">
+            <span className="material-symbols-outlined">person</span>
+            <span className="nav-text">정보</span>
+          </button>
+        </div>
+      </nav>
 
-      {/* 결제 모달 */}
+      <div className="sparkles-overlay">
+        <div className="sparkle sparkle-1 animate-pulse"><span className="material-symbols-outlined text-[10px]">spark</span></div>
+        <div className="sparkle sparkle-2 animate-pulse"><span className="material-symbols-outlined text-[8px]">spark</span></div>
+        <div className="sparkle sparkle-3 animate-pulse"><span className="material-symbols-outlined text-[12px]">flare</span></div>
+        <div className="sparkle sparkle-4 animate-pulse"><span className="material-symbols-outlined text-[6px]">spark</span></div>
+      </div>
+
       {showPayment && (
         <PaymentModal 
           onUpgrade={handleUpgrade} 
@@ -190,7 +260,8 @@ export default function Home() {
           }}
         />
       )}
-    </main>
+    </div>
   );
 }
+
 
