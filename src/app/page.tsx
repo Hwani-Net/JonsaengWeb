@@ -120,11 +120,11 @@ export default function Home() {
         </div>
 
         {!result ? (
-          <section className="glass-card input-section">
+          <section className="input-section">
             <div className="absolute top-0 right-0 p-2 opacity-20">
               <span className="material-symbols-outlined text-6xl text-gold">history_edu</span>
             </div>
-            <h2 className="input-header text-slate-100">
+            <h2 className="input-header">
               <span className="material-symbols-outlined text-primary">edit_note</span>
               정보 입력
             </h2>
@@ -156,7 +156,7 @@ export default function Home() {
               
               <button 
                 type="button" 
-                className="btn-submit gold-glow" 
+                className="btn-submit" 
                 onClick={handleAnalyze}
                 disabled={loading}
               >
@@ -167,14 +167,14 @@ export default function Home() {
           </section>
         ) : (
           <section className="result-section">
-            <h3 className="result-header text-gold/80">
+            <h3 className="result-header">
               <div className="result-line"></div>
-              분석 결과
+              분석 결과 예시
               <div className="result-line"></div>
             </h3>
             
-            <div className="tarot-card tarot-border">
-              <div className="tarot-corner">
+            <div className="tarot-card">
+              <div className="tarot-corner top">
                 <span className="material-symbols-outlined text-xs">grade</span>
                 <span className="material-symbols-outlined text-xs">grade</span>
               </div>
