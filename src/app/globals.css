@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap');
+
+/* ─── Design Tokens ─── */
+:root {
+  --bg-primary: #f4f6f9;
+  --bg-secondary: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --accent: #8b5cf6;
+  --accent-hover: #7c3aed;
+  --border: #e2e8f0;
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.85);
+  --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+  --radius: 16px;
+  --transition: 0.22s ease;
+}
+
+[data-theme='dark'] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent: #a78bfa;
+  --accent-hover: #c4b5fd;
+  --border: #334155;
+  --glass-bg: rgba(30, 41, 59, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* ─── Reset ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background var(--transition), color var(--transition);
+}
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+textarea { font-family: inherit; }
+
+/* ─── Glass ─── */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius);
+}
+
+/* ─── Layout ─── */
+.app-container { display: flex; width: 100vw; min-height: 100vh; }
+
+/* ─── Buttons ─── */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  color: #fff; padding: 14px 28px; border-radius: 12px;
+  font-weight: 600; font-size: 1rem;
+  transition: all var(--transition);
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+}
+.btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139, 92, 246, 0.42); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.icon-btn {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--border); font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+}
+.icon-btn:hover { background: var(--accent); color: #fff; }
+.lang-btn { font-weight: 700; font-size: 0.75rem; }
+
+.action-btn {
+  padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 500;
+  background: var(--accent); color: #fff; transition: all var(--transition);
+}
+.action-btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+/* ─── Form ─── */
+.field-label {
+  display: block; font-size: 0.85rem; font-weight: 600;
+  color: var(--text-secondary); margin-bottom: 10px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.text-input {
+  width: 100%; background: var(--bg-secondary);
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px; font-size: 0.95rem; color: var(--text-primary);
+  resize: vertical; transition: border-color var(--transition), box-shadow var(--transition);
+  line-height: 1.6;
+}
+.text-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15); }
+
+/* ─── AdSense ─── */
+.ads-slot {
+  background: var(--bg-secondary); border: 1px dashed var(--border);
+  border-radius: 12px; height: 90px;
+  display: flex; align-items: center; justify-content: center;
+}
+.ads-placeholder { font-size: 0.75rem; color: var(--text-secondary); opacity: 0.5; text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ─── Modal ─── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center;
+  z-index: 100; animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-box { padding: 40px 36px; max-width: 440px; width: 90%; text-align: center; }
+.modal-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; }
+.modal-desc { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 28px; line-height: 1.6; }
+.modal-btn { width: 100%; margin-bottom: 12px; }
+.modal-cancel { color: var(--text-secondary); font-size: 0.875rem; padding: 8px; width: 100%; border-radius: 8px; transition: background var(--transition); }
+.modal-cancel:hover { background: var(--border); }
+
+/* ─── Animations ─── */
+@keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ─── Mobile ─── */
+@media (max-width: 768px) {
+  .app-container { flex-direction: column; }
+}
